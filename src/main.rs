@@ -11,9 +11,13 @@ fn main() {
 
     let mut pack = Pack::new(script);
     runpack_obj::register(&mut pack);
+    register(&mut pack);
+    pack.run().expect("Failed running the script");
+}
+
+fn register(pack: &mut Pack) {
     pack.dictionary.native("print", print);
     pack.dictionary.native("print_stack", print_stack);
-    pack.run().expect("Failed running the script");
 }
 
 fn print(pack: &mut Pack) -> Result<bool, runpack::Error> {
