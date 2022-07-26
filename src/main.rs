@@ -34,6 +34,11 @@ fn main() {
 
         print_stack
         print_ret_stack
+
+        '-------' print
+
+        { 'Loooping!' print again infinite } def infinite
+        infinite
     "#;
 
     // Create pack and register plugins
