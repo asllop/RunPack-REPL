@@ -171,6 +171,11 @@ fn again(pack: &mut Pack) -> Result<bool, runpack::Error> {
     }
 }
 
+//PROBLEMA: este, descartant el primer pop pk la paraula ret es troba dins del block del if,
+// per això tenim aquesta adreça de return de sobres!!! Si cridem ret directament dins del
+// block principal, fallarà!!! Si nidem diversos blocks, el ret cada vegada tindrà més coses dins la pila.
+//SOLUCIÓ: hauríem de cercar dins la pila de retorn un valor que NO estigui dins del block actual (el de la paraula).
+// Aquesta és la veritable adreça de retorn.
 fn ret(pack: &mut Pack) -> Result<bool, runpack::Error> {
     // Fa igual que "}"
     // Discard 1 ret positions, the call to 'ret'
