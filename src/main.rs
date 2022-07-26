@@ -6,12 +6,34 @@ fn main() {
 
     // YOUR CODE GOES HERE
     let script = r#"
-        'Hello, World!' print
+        "TODO: veure diferents maneres de treballar amb el concat de la paraula cridada"
+
+        "Implementar . i : sense concat"
+
+        { dup : val_a } def get_a
+        { swap : val_b } def get_b
+        (
+            @ +         { get_a get_b + }
+            @ hi        { 'Hellooooo' print }
+            @ val_a     10
+            @ val_b     20
+            new
+        )
+        def suma
+
+        @ hi @ suma fn
+        @ + @ suma md print
+
+        print_stack
     "#;
 
-    let mut pack = Pack::new(script);
+    // Create pack and register plugins
+    let mut pack = Pack::new();
     runpack_obj::register(&mut pack);
-    register(&mut pack);
+    self::register(&mut pack);
+
+    // Add script code and run
+    pack.code(script);
     pack.run().expect("Failed running the script");
 }
 
