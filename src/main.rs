@@ -8,23 +8,16 @@ fn main() {
     let script = r#"
         "TODO: veure diferents maneres de treballar amb el concat de la paraula cridada"
 
-        "Implementar . i : sense concat"
+        lex 'count.'
+            { dup print } def print
+            { -- } def dec
+            { dup 0 <= } def finished?
+            { 10 here count.print count.dec count.finished? { end } if } def ten
+        lex ''
+        
+        count.ten
 
-        { dup : val_a } def get_a
-        { swap : val_b } def get_b
-        (
-            @ +         { get_a get_b + }
-            @ hi        { 'Hellooooo' print }
-            @ val_a     10
-            @ val_b     20
-            new
-        )
-        def suma
-
-        @ hi @ suma fn
-        @ + @ suma md print
-
-        print_stack
+        'Finished!' print
     "#;
 
     // Create pack and register plugins
@@ -40,6 +33,8 @@ fn main() {
 fn register(pack: &mut Pack) {
     pack.dictionary.native("print", print);
     pack.dictionary.native("print_stack", print_stack);
+    pack.dictionary.native("here", here);
+    pack.dictionary.native("end", end);
 }
 
 fn print(pack: &mut Pack) -> Result<bool, runpack::Error> {
@@ -67,4 +62,25 @@ fn print_stack(pack: &mut Pack) -> Result<bool, runpack::Error>  {
         println!("\t{} : {:?}", n, pack.stack.get(n).unwrap());
     }
     Ok(true)
+}
+
+//Experiment: recursive words (tail recursion):
+//And an "end" word to abort recursion.
+//Implementation:
+// { here ... } def word            "Word 'here' puts in the ret stack position of itself, and } just returns to it"
+
+fn here(pack: &mut Pack) -> Result<bool, runpack::Error> {
+    pack.ret.push(pack.concat.pointer - 1);
+    Ok(true)
+}
+
+fn end(pack: &mut Pack) -> Result<bool, runpack::Error> {
+    // Discard 2 ret positions, the call to 'end' and the 'here'.
+    if let (Some(_), Some(_), Some(pos)) = (pack.ret.pop(), pack.ret.pop(), pack.ret.pop()) {
+        pack.concat.pointer = pos;
+        Ok(true)
+    }
+    else {
+        Err(runpack::Error::new("end: Return stack underflow".into(), runpack::ErrCode::StackUnderflow.into()))
+    }
 }
