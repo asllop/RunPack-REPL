@@ -1,22 +1,25 @@
+mod repl;
+
 use runpack::{Pack, Cell, self};
 use runpack_obj;
 
 fn main() {
-    println!("RunPack Tutorial\n");
+    println!("RunPack REPL v0.1.0\n");
 
-    // YOUR CODE GOES HERE
-    let script = r#"
-        'Hello' print
-    "#;
-
-    // Create pack and register plugins
     let mut pack = Pack::new();
     runpack_obj::register(&mut pack);
     self::register(&mut pack);
 
-    // Add script code and run
-    pack.code(script);
-    pack.run().expect("Failed running the script");
+    repl::cmd(pack.dictionary.dict.keys().map(|s| s.clone()).collect(), "history.txt", |line| {
+        let backpack = pack.clone();
+        pack.code(&line);
+        if let Err(e) = pack.run() {
+            println!("{}", e.msg);
+            pack = backpack;
+        }
+        // Update completion list
+        pack.dictionary.dict.keys().map(|s| s.clone()).collect()
+    }).expect("Error");
 }
 
 fn register(pack: &mut Pack) {

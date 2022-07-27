@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 runpack = { path = "../runpack/runpack" }
 runpack_obj = { path = "../runpack/runpack_obj" }
+rustyline = "10.0.0"
+rustyline-derive = "0.7.0"
