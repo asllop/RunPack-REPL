@@ -10,7 +10,7 @@ fn main() {
     runpack_obj::register(&mut pack);
     self::register(&mut pack);
 
-    repl::cmd(pack.dictionary.dict.keys().map(|s| s.clone()).collect(), "history.txt", |line| {
+    repl::cmd(word_list(&mut pack), "history.txt", |line| {
         let backpack = pack.clone();
         pack.code(&line);
         if let Err(e) = pack.run() {
@@ -18,8 +18,14 @@ fn main() {
             pack = backpack;
         }
         // Update completion list
-        pack.dictionary.dict.keys().map(|s| s.clone()).collect()
+        word_list(&mut pack)
     }).expect("Error");
+}
+
+fn word_list(pack: &mut Pack) -> Vec<String> {
+    let mut list: Vec<String> = pack.dictionary.dict.keys().map(|s| s.clone()).collect();
+    list.sort();
+    list
 }
 
 fn register(pack: &mut Pack) {
