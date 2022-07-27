@@ -26,7 +26,7 @@ fn main() {
         zero my_zero
         my_zero print
 
-        "Create a clone of def"
+        "Create a clone of the 'def' word"
         { @@ @def } def var
 
         'Andreu' var name
@@ -39,6 +39,11 @@ fn main() {
         { @@ } def at
 
         at any_word print
+
+        "
+        TODO: experiments with obj words that use the concat ':' and '.'
+        see if we can implement them in RunPack using @@
+        "
     "#;
 
     // Create pack and register plugins
