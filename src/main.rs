@@ -9,6 +9,7 @@ fn main() {
     let mut pack = Pack::new();
     runpack_obj::register(&mut pack);
     self::register(&mut pack);
+    pack.run().expect("Error running the prelude");
 
     repl::cmd(word_list(&mut pack), "history.txt", |line| {
         let backpack = pack.clone();
