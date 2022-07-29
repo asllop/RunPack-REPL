@@ -72,7 +72,7 @@ fn print(pack: &mut Pack) -> Result<bool, runpack::Error> {
 
 fn print_stack(pack: &mut Pack) -> Result<bool, runpack::Error>  {
     println!("Stack:");
-    for n in (0..pack.stack.size()).rev() {
+    for n in 0..pack.stack.size() {
         println!("\t{} : {:?}", n, pack.stack.get(n).unwrap());
     }
     Ok(true)
