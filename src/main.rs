@@ -39,6 +39,7 @@ fn register(pack: &mut Pack) {
     pack.dictionary.native("print_stack", print_stack);
     pack.dictionary.native("print_ret_stack", print_ret_stack);
     pack.dictionary.native("help", help);
+    pack.dictionary.native("list", list);
 }
 
 fn print(pack: &mut Pack) -> Result<bool, runpack::Error> {
@@ -96,5 +97,37 @@ fn help(pack: &mut Pack) -> Result<bool, runpack::Error> {
     }
     else {
         Err(runpack::Error::new("help: No correct arguments in the concat".into(), runpack::ErrCode::NoArgsConcat.into()))
+    }
+}
+
+fn list(pack: &mut Pack) -> Result<bool, runpack::Error> {
+    if let Some(Cell::Word(word)) = pack.concat.next() {
+        if let Some(word_def) = pack.dictionary.dict.get(word) {
+            match word_def {
+                runpack::DictEntry::Native(_) => println!("Word is native"),
+                runpack::DictEntry::Data(cell) => println!("{:?}", cell),
+                runpack::DictEntry::Defined(block) => {
+                    print!("{{ ");
+                    for n in block.pos..(block.pos + block.len) {
+                        match &pack.concat.array[n] {
+                            Cell::Integer(i) => print!("{} ", i),
+                            Cell::Float(f) => print!("{} ", f),
+                            Cell::Boolean(b) => print!("{} ", b),
+                            Cell::String(s) => print!("'{}' ", s),
+                            Cell::Word(w) => print!("{} ", w),
+                            _ => print!("<?> "),
+                        }
+                    }
+                    println!();
+                },
+            }
+        }
+        else {
+            println!("Word doesn't exist");
+        }
+        Ok(true)
+    }
+    else {
+        Err(runpack::Error::new("list: No correct arguments in the concat".into(), runpack::ErrCode::NoArgsConcat.into()))
     }
 }
