@@ -1,0 +1,2 @@
+#!/bin/sh
+cargo $@ --manifest-path cargo_dev/Cargo.toml

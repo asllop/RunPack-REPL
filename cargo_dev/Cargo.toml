@@ -5,12 +5,12 @@ edition = "2021"
 
 [[bin]]
 name = "runpack-cli"
-path = "src/main.rs"
+path = "../src/main.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-runpack = { git = "https://github.com/asllop/RunPack" }
-runpack_obj = { git = "https://github.com/asllop/RunPack" }
+runpack = { path = "../../runpack/runpack" }
+runpack_obj = { path = "../../runpack/runpack_obj" }
 rustyline = "10.0.0"
 rustyline-derive = "0.7.0"
