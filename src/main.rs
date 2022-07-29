@@ -115,7 +115,9 @@ fn list(pack: &mut Pack) -> Result<bool, runpack::Error> {
                             Cell::Boolean(b) => print!("{} ", b),
                             Cell::String(s) => print!("'{}' ", s),
                             Cell::Word(w) => print!("{} ", w),
-                            _ => print!("<?> "),
+                            Cell::Block(_) => print!("<BLOCK> "),
+                            Cell::Object(_) => print!("<OBJECT> "),
+                            Cell::Empty => print!("<EMPTY> "),
                         }
                     }
                     println!();
