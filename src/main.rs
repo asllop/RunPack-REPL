@@ -9,8 +9,17 @@ fn main() {
     println!("RunPack REPL v{}\n", VERSION);
 
     let mut pack = Pack::new_dev_mode(true);
+
+    println!("Loading...");
+
+    println!("> Register runpack_obj.");
     runpack_obj::register(&mut pack);
+
+    println!("> Register runpack_repl.");
     self::register(&mut pack);
+
+    println!("Done!\n");
+
     pack.run().expect("Error running the prelude");
 
     //TODO: store defined stuff in a source file
