@@ -241,15 +241,23 @@ dependencies = [
 [[package]]
 name = "runpack"
 version = "0.1.0"
-source = "git+https://github.com/asllop/RunPack#f4a4b8aa8a1627fc7faed34170cbcba18344cd75"
+source = "git+https://github.com/asllop/RunPack#371a8cfc6379fcbe471a5384ffecd7cff5f356d4"
 dependencies = [
  "hashbrown",
 ]
 
 [[package]]
+name = "runpack_async"
+version = "0.1.0"
+source = "git+https://github.com/asllop/RunPack#371a8cfc6379fcbe471a5384ffecd7cff5f356d4"
+dependencies = [
+ "runpack",
+]
+
+[[package]]
 name = "runpack_obj"
 version = "0.1.0"
-source = "git+https://github.com/asllop/RunPack#f4a4b8aa8a1627fc7faed34170cbcba18344cd75"
+source = "git+https://github.com/asllop/RunPack#371a8cfc6379fcbe471a5384ffecd7cff5f356d4"
 dependencies = [
  "runpack",
 ]
@@ -259,6 +267,7 @@ name = "runpack_repl"
 version = "0.1.0"
 dependencies = [
  "runpack",
+ "runpack_async",
  "runpack_obj",
  "rustyline",
  "rustyline-derive",

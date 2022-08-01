@@ -12,5 +12,6 @@ path = "src/main.rs"
 [dependencies]
 runpack = { git = "https://github.com/asllop/RunPack" }
 runpack_obj = { git = "https://github.com/asllop/RunPack" }
+runpack_async = { git = "https://github.com/asllop/RunPack" }
 rustyline = "10.0.0"
 rustyline-derive = "0.7.0"

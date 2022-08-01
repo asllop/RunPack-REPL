@@ -12,5 +12,6 @@ path = "../src/main.rs"
 [dependencies]
 runpack = { path = "../../runpack/runpack" }
 runpack_obj = { path = "../../runpack/runpack_obj" }
+runpack_async = { path = "../../runpack/runpack_async" }
 rustyline = "10.0.0"
 rustyline-derive = "0.7.0"

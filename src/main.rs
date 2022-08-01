@@ -2,6 +2,7 @@ mod repl;
 
 use runpack::{Pack, Cell, self};
 use runpack_obj;
+use runpack_async;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -15,15 +16,27 @@ fn main() {
     println!("> Register runpack_obj.");
     runpack_obj::register(&mut pack);
 
+    println!("> Register runpack_async.");
+    runpack_async::register(&mut pack);
+
     println!("> Register runpack_repl.");
     self::register(&mut pack);
 
     println!("Done!\n");
 
+    println!("Internal commands:");
+    println!("\thelp WORD\t\tPrint usage information of WORD.");
+    println!("\tlist WORD\t\tPrint definition of WORD.");
+    println!("\tprint_stack\t\tPrint stack contents.");
+    println!("\tprint_ret_stack\t\tPrint return stack contents.");
+    println!();
+
     pack.run().expect("Error running the prelude");
 
     //TODO: store defined stuff in a source file
     //TODO: if script.rnp exists, rename it and start a new one
+    //TODO: pass argument to run script from cmd line and end, without opening the REPL mode
+    //TODO: support scripting mode #!
 
     repl::cmd(word_list(&mut pack), "script.rnp", |line| {
         let backup_pack = pack.clone();

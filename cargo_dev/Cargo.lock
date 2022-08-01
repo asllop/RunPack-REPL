@@ -246,6 +246,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "runpack_async"
+version = "0.1.0"
+dependencies = [
+ "runpack",
+]
+
+[[package]]
 name = "runpack_obj"
 version = "0.1.0"
 dependencies = [
@@ -257,6 +264,7 @@ name = "runpack_repl"
 version = "0.1.0"
 dependencies = [
  "runpack",
+ "runpack_async",
  "runpack_obj",
  "rustyline",
  "rustyline-derive",
