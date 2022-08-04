@@ -34,11 +34,11 @@ fn main() {
     pack.run().expect("Error running the prelude");
 
     //TODO: store defined stuff in a source file
-    //TODO: if script.rnp exists, rename it and start a new one
+    //      command to show source, like less, but we can edit lines: move, copy-paste, delete, modify.
     //TODO: pass argument to run script from cmd line and end, without opening the REPL mode
     //TODO: support scripting mode #!
 
-    repl::cmd(word_list(&mut pack), "script.rnp", |line| {
+    repl::cmd(word_list(&mut pack), "history.txt", |line| {
         let backup_pack = pack.clone();
         pack.code(&line);
         if let Err(e) = pack.run() {
@@ -51,7 +51,7 @@ fn main() {
 }
 
 fn word_list(pack: &mut Pack) -> Vec<String> {
-    let mut list: Vec<String> = pack.dictionary.dict.keys().map(|s| s.clone()).collect();
+    let mut list: Vec<String> = pack.dictionary.dict.keys().filter(|x| !x.starts_with("?_") && !x.ends_with("_")).map(|s| s.clone()).collect();
     list.sort();
     list
 }
