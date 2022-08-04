@@ -9,7 +9,8 @@ const VERSION: &str = env!("CARGO_PKG_VERSION");
 fn main() {
     println!("RunPack REPL v{}\n", VERSION);
 
-    let mut pack = Pack::new_dev_mode(true);
+    let mut pack = Pack::new();
+    pack.dictionary.data("?__", Cell::Boolean(true));
 
     println!("Loading...");
 
