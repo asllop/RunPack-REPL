@@ -28,8 +28,8 @@ fn main() {
     println!("Internal commands:");
     println!("\thelp WORD\t\tPrint usage information of WORD.");
     println!("\tlist WORD\t\tPrint definition of WORD.");
-    println!("\tprint_stack\t\tPrint stack contents.");
-    println!("\tprint_ret_stack\t\tPrint return stack contents.");
+    println!("\tshow_stack\t\tShow stack contents.");
+    println!("\tshow_ret_stack\t\tShow return stack contents.");
     println!();
 
     pack.run().expect("Error running the prelude");
@@ -52,15 +52,19 @@ fn main() {
 }
 
 fn word_list(pack: &mut Pack) -> Vec<String> {
-    let mut list: Vec<String> = pack.dictionary.dict.keys().filter(|x| !x.starts_with("?_") && !x.ends_with("_")).map(|s| s.clone()).collect();
+    let mut list: Vec<String> = pack.dictionary.dict
+        .keys()
+        .filter(|x| !x.starts_with("?_") && !x.ends_with("_"))
+        .map(|s| s.clone())
+        .collect();
     list.sort();
     list
 }
 
 fn register(pack: &mut Pack) {
     pack.dictionary.native("print", print);
-    pack.dictionary.native("print_stack", print_stack);
-    pack.dictionary.native("print_ret_stack", print_ret_stack);
+    pack.dictionary.native("show_stack", print_stack);
+    pack.dictionary.native("show_ret_stack", print_ret_stack);
     pack.dictionary.native("help", help);
     pack.dictionary.native("list", list);
 }

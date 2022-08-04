@@ -3,8 +3,7 @@ use std::borrow::Cow::{self, Borrowed, Owned};
 
 use rustyline::completion::Pair;
 use rustyline::error::ReadlineError;
-use rustyline::highlight::{Highlighter, MatchingBracketHighlighter};
-use rustyline::validate::MatchingBracketValidator;
+use rustyline::highlight::Highlighter;
 use rustyline::{CompletionType, Config, EditMode, Editor};
 use rustyline_derive::{Completer, Helper, Hinter, Validator};
 
@@ -71,9 +70,9 @@ impl Completer for MyCompleter {
 struct MyHelper {
     #[rustyline(Completer)]
     completer: MyCompleter,
-    highlighter: MatchingBracketHighlighter,
+    highlighter: (),
     #[rustyline(Validator)]
-    validator: MatchingBracketValidator,
+    validator: (),
     colored_prompt: String,
 }
 
@@ -111,9 +110,9 @@ fn new_editor() -> rustyline::Result<Editor<MyHelper>> {
         .build();
     let h = MyHelper {
         completer: MyCompleter::default(),
-        highlighter: MatchingBracketHighlighter::new(),
+        highlighter: (),
         colored_prompt: "".to_owned(),
-        validator: MatchingBracketValidator::new(),
+        validator: (),
     };
     let mut rl = Editor::with_config(config)?;
     rl.set_helper(Some(h));
