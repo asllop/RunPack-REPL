@@ -30,6 +30,7 @@ fn main() {
     println!("\tlist WORD\t\tPrint definition of WORD.");
     println!("\tshow_stack\t\tShow stack contents.");
     println!("\tshow_ret_stack\t\tShow return stack contents.");
+    println!("\tprint\t\t\tGet a cell from the stack and prints it.");
     println!();
 
     pack.run().expect("Error running the prelude");
