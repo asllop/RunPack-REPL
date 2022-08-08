@@ -1,3 +1,5 @@
 /target
 /cargo_dev/target
 history.txt
+DOC.md
+.DS_Store

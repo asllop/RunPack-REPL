@@ -1,8 +1,10 @@
 mod repl;
+mod commands;
 
 use runpack::{Pack, Cell, self};
 use runpack_obj;
 use runpack_async;
+use commands::*;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -31,6 +33,7 @@ fn main() {
     println!("\tshow_stack\t\tShow stack contents.");
     println!("\tshow_ret_stack\t\tShow return stack contents.");
     println!("\tprint\t\t\tGet a cell from the stack and prints it.");
+    println!("\tdoc x y z /doc\t\tGenerate documentation file ./DOC.md for words x,y,z...");
     println!();
 
     pack.run().expect("Error running the prelude");
@@ -68,96 +71,5 @@ fn register(pack: &mut Pack) {
     pack.dictionary.native("show_ret_stack", print_ret_stack);
     pack.dictionary.native("help", help);
     pack.dictionary.native("list", list);
-}
-
-fn print(pack: &mut Pack) -> Result<bool, runpack::Error> {
-    if let Some(cell) = pack.stack.pop() {
-        match cell {
-            Cell::Empty => println!("<EMPTY>"),
-            Cell::Integer(i) => println!("{}", i),
-            Cell::Float(f) => println!("{}", f),
-            Cell::Boolean(b) => println!("{}", b),
-            Cell::String(s) => println!("{}", s),
-            Cell::Word(w) => println!("{}", w),
-            Cell::Block(b) => println!("{:?}", b),
-            Cell::Object(o) => println!("{:?}", o),
-        }
-        Ok(true)
-    }
-    else {
-        Err(runpack::Error::new("print: couldn't get a cell from the stack".into(), 1000))
-    }
-}
-
-fn print_stack(pack: &mut Pack) -> Result<bool, runpack::Error>  {
-    println!("Stack:");
-    for n in 0..pack.stack.size() {
-        println!("\t{} : {:?}", n, pack.stack.get(n).unwrap());
-    }
-    Ok(true)
-}
-
-fn print_ret_stack(pack: &mut Pack) -> Result<bool, runpack::Error>  {
-    println!("{:?}", pack.ret);
-    Ok(true)
-}
-
-fn help(pack: &mut Pack) -> Result<bool, runpack::Error> {
-    if let Some(Cell::Word(word)) = pack.concat.next() {
-        let stack_help_word = format!("?_{word}_stack_");
-        let desc_help_word = format!("?_{word}_desc_");
-        if pack.dictionary.dict.contains_key(&stack_help_word) && pack.dictionary.dict.contains_key(&desc_help_word) {
-            pack.exec(&stack_help_word)?;
-            pack.exec(&desc_help_word)?;
-            if let (Some(Cell::String(desc)), Some(Cell::String(stack_effect))) = (pack.stack.pop(), pack.stack.pop()) {
-                println!("Stack effect:\t{}", stack_effect);
-                println!("Description:\t{}", desc);
-                Ok(true)
-            }
-            else {
-                Err(runpack::Error::new("help: Helper words didn't return data".into(), runpack::ErrCode::NoArgsStack.into()))
-            }
-        }
-        else {
-            println!("No help for word {}", word);
-            Ok(true)
-        }
-    }
-    else {
-        Err(runpack::Error::new("help: No correct arguments in the concat".into(), runpack::ErrCode::NoArgsConcat.into()))
-    }
-}
-
-fn list(pack: &mut Pack) -> Result<bool, runpack::Error> {
-    if let Some(Cell::Word(word)) = pack.concat.next() {
-        if let Some(word_def) = pack.dictionary.dict.get(word) {
-            match word_def {
-                runpack::DictEntry::Native(_) => println!("Word is native"),
-                runpack::DictEntry::Data(cell) => println!("{:?}", cell),
-                runpack::DictEntry::Defined(block) => {
-                    print!("{{ ");
-                    for n in block.pos..(block.pos + block.len) {
-                        match &pack.concat.array[n] {
-                            Cell::Integer(i) => print!("{} ", i),
-                            Cell::Float(f) => print!("{} ", f),
-                            Cell::Boolean(b) => print!("{} ", b),
-                            Cell::String(s) => print!("'{}' ", s),
-                            Cell::Word(w) => print!("{} ", w),
-                            Cell::Block(_) => print!("<BLOCK> "),
-                            Cell::Object(_) => print!("<OBJECT> "),
-                            Cell::Empty => print!("<EMPTY> "),
-                        }
-                    }
-                    println!();
-                },
-            }
-        }
-        else {
-            println!("Word doesn't exist");
-        }
-        Ok(true)
-    }
-    else {
-        Err(runpack::Error::new("list: No correct arguments in the concat".into(), runpack::ErrCode::NoArgsConcat.into()))
-    }
+    pack.dictionary.native("doc", doc);
 }
