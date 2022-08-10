@@ -16,7 +16,7 @@ pub fn print(pack: &mut Pack) -> Result<bool, runpack::Error> {
         Ok(true)
     }
     else {
-        Err(runpack::Error::new("print: couldn't get a cell from the stack".into(), 1000))
+        Err(runpack::Error::new("print: couldn't get a cell from the stack".into()))
     }
 }
 
@@ -46,7 +46,7 @@ pub fn help(pack: &mut Pack) -> Result<bool, runpack::Error> {
                 Ok(true)
             }
             else {
-                Err(runpack::Error::new("help: Helper words didn't return data".into(), runpack::ErrCode::NoArgsStack.into()))
+                Err(runpack::Error::new("help: Helper words didn't return data".into()))
             }
         }
         else {
@@ -55,7 +55,7 @@ pub fn help(pack: &mut Pack) -> Result<bool, runpack::Error> {
         }
     }
     else {
-        Err(runpack::Error::new("help: No correct arguments in the concat".into(), runpack::ErrCode::NoArgsConcat.into()))
+        Err(runpack::Error::new("help: No correct arguments in the concat".into()))
     }
 }
 
@@ -89,7 +89,7 @@ pub fn list(pack: &mut Pack) -> Result<bool, runpack::Error> {
         Ok(true)
     }
     else {
-        Err(runpack::Error::new("list: No correct arguments in the concat".into(), runpack::ErrCode::NoArgsConcat.into()))
+        Err(runpack::Error::new("list: No correct arguments in the concat".into()))
     }
 }
 
@@ -121,7 +121,7 @@ pub fn doc(pack: &mut Pack) -> Result<bool, runpack::Error> {
                 help.insert(w, (stack_effect, desc));
             }
             else {
-                return Err(runpack::Error::new("doc: Helper words didn't return data".into(), runpack::ErrCode::NoArgsStack.into()))
+                return Err(runpack::Error::new("doc: Helper words didn't return data".into()))
             }
         }
     }
@@ -151,7 +151,7 @@ pub fn doc(pack: &mut Pack) -> Result<bool, runpack::Error> {
         }
     }
     else {
-        return Err(runpack::Error::new("doc: Unable to create DOC.md file".into(), 1000));
+        return Err(runpack::Error::new("doc: Unable to create DOC.md file".into()));
     }
     Ok(true)
 }
