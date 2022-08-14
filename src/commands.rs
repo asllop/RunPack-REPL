@@ -1,4 +1,4 @@
-use runpack::{Pack, Cell, self};
+use runpack::{Pack, Cell, self, DictEntry};
 use std::collections::HashMap;
 
 pub fn print(pack: &mut Pack) -> Result<bool, runpack::Error> {
@@ -116,11 +116,19 @@ pub fn doc(pack: &mut Pack) -> Result<bool, runpack::Error> {
     for w in &words {
         let stack_help_word = format!("?_{w}_stack_");
         let desc_help_word = format!("?_{w}_desc_");
-        if pack.dictionary.dict.contains_key(&stack_help_word) && pack.dictionary.dict.contains_key(&desc_help_word) {
+        if pack.dictionary.dict.contains_key(&stack_help_word) &&
+        pack.dictionary.dict.contains_key(&desc_help_word) &&
+        pack.dictionary.dict.contains_key(w) {
             pack.exec(&stack_help_word)?;
             pack.exec(&desc_help_word)?;
+            let word_type = match pack.dictionary.dict.get(w) {
+                Some(DictEntry::Native(_)) => "Native",
+                Some(DictEntry::Defined(_)) => "Defined",
+                Some(DictEntry::Data(_)) => "Data",
+                None => return Err(runpack::Error::new("doc: word doesn't exist".into())),
+            };
             if let (Some(Cell::String(desc)), Some(Cell::String(stack_effect))) = (pack.stack.pop(), pack.stack.pop()) {
-                help.insert(w, (stack_effect, desc));
+                help.insert(w, (stack_effect, desc, word_type));
             }
             else {
                 return Err(runpack::Error::new("doc: Helper words didn't return data".into()))
@@ -138,8 +146,9 @@ pub fn doc(pack: &mut Pack) -> Result<bool, runpack::Error> {
         file.write_all(b"# Description\n\n").ok();
         */
         for w in &words {
-            if let Some((stack_effect, description)) = help.get(w) {
+            if let Some((stack_effect, description, word_type)) = help.get(w) {
                 file.write_fmt(format_args!("## {w}\n\n")).ok();
+                file.write_fmt(format_args!("*{}*\n\n", word_type)).ok();
                 file.write_all(b"Stack Effects:\n\n").ok();
                 file.write_all(b"```\n").ok();
                 file.write_fmt(format_args!("{stack_effect}\n")).ok();
