@@ -11,7 +11,7 @@ pub fn print(pack: &mut Pack) -> Result<bool, runpack::Error> {
             Cell::String(s) => println!("{}", s),
             Cell::Word(w) => println!("{}", w),
             Cell::Block(b) => println!("{:?}", b),
-            Cell::Object(o) => println!("{:?}", o),
+            Cell::Map(m) => println!("{:?}", m),
             Cell::Vector(v) => println!("{:?}", v),
         }
         Ok(true)
@@ -76,7 +76,7 @@ pub fn list(pack: &mut Pack) -> Result<bool, runpack::Error> {
                             Cell::String(s) => print!("'{}' ", s),
                             Cell::Word(w) => print!("{} ", w),
                             Cell::Block(_) => print!("<BLOCK> "),
-                            Cell::Object(_) => print!("<OBJECT> "),
+                            Cell::Map(_) => print!("<MAP> "),
                             Cell::Vector(_) => print!("<VECTOR> "),
                             Cell::Empty => print!("<EMPTY> "),
                         }
