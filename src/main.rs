@@ -2,8 +2,6 @@ mod repl;
 mod commands;
 
 use runpack::{Pack, Cell, self};
-use runpack_obj;
-use runpack_async;
 use commands::*;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
@@ -15,13 +13,6 @@ fn main() {
     pack.dictionary.data("?__", Cell::Boolean(true));
 
     println!("Loading...");
-
-    println!("> Register runpack_obj.");
-    runpack_obj::register(&mut pack);
-
-    println!("> Register runpack_async.");
-    runpack_async::register(&mut pack);
-
     println!("> Register runpack_repl.");
     self::register(&mut pack);
 
@@ -33,7 +24,7 @@ fn main() {
     println!("\tshow_stack\t\tShow stack contents.");
     println!("\tshow_ret_stack\t\tShow return stack contents.");
     println!("\tprint\t\t\tGet a cell from the stack and prints it.");
-    println!("\tdoc x y z /doc\t\tGenerate documentation file ./DOC.md for words x,y,z...");
+    println!("\tdoc x y ... N /doc\tGenerate documentation file ./DOC.md for words x,y,z...");
     println!();
 
     pack.run().expect("Error running the prelude");
@@ -42,6 +33,7 @@ fn main() {
     //      command to show source, like less, but we can edit lines: move, copy-paste, delete, modify.
     //TODO: pass argument to run script from cmd line and end, without opening the REPL mode
     //TODO: support scripting mode #!
+    //TODO: save session (dictionary, stack, ret stack, and concat).
 
     repl::cmd(word_list(&mut pack), "history.txt", |line| {
         let backup_pack = pack.clone();

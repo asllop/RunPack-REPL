@@ -4,15 +4,13 @@ use std::collections::HashMap;
 pub fn print(pack: &mut Pack) -> Result<bool, runpack::Error> {
     if let Some(cell) = pack.stack.pop() {
         match cell {
-            Cell::Empty => println!("<EMPTY>"),
             Cell::Integer(i) => println!("{}", i),
             Cell::Float(f) => println!("{}", f),
             Cell::Boolean(b) => println!("{}", b),
             Cell::String(s) => println!("{}", s),
             Cell::Word(w) => println!("{}", w),
             Cell::Block(b) => println!("{:?}", b),
-            Cell::Map(m) => println!("{:?}", m),
-            Cell::Vector(v) => println!("{:?}", v),
+            Cell::Struct(s) => println!("{:?}", s),
         }
         Ok(true)
     }
@@ -76,9 +74,7 @@ pub fn list(pack: &mut Pack) -> Result<bool, runpack::Error> {
                             Cell::String(s) => print!("'{}' ", s),
                             Cell::Word(w) => print!("{} ", w),
                             Cell::Block(_) => print!("<BLOCK> "),
-                            Cell::Map(_) => print!("<MAP> "),
-                            Cell::Vector(_) => print!("<VECTOR> "),
-                            Cell::Empty => print!("<EMPTY> "),
+                            Cell::Struct(_) => print!("<STRUCT> "),
                         }
                     }
                     println!();
