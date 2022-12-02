@@ -24,7 +24,7 @@ fn main() {
     println!("\tshow_stack\t\tShow stack contents.");
     println!("\tshow_ret_stack\t\tShow return stack contents.");
     println!("\tprint\t\t\tGet a cell from the stack and prints it.");
-    println!("\tdoc x y ... N /doc\tGenerate documentation file ./DOC.md for words x,y,z...");
+    println!("\tdoc x y ... N \\doc\tGenerate documentation file ./DOC.md for words x,y,z...");
     println!();
 
     pack.run().expect("Error running the prelude");

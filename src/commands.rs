@@ -100,7 +100,7 @@ doc a b c d e f g /doc
 pub fn doc(pack: &mut Pack) -> Result<bool, runpack::Error> {
     let mut words = Vec::new();
     while let Some(Cell::Word(w)) = pack.concat.next() {
-        if w == "/doc" {
+        if w == "\\doc" {
             break;
         }
         else {
